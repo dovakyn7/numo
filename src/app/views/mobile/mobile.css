@@ -1,0 +1,35 @@
+* {
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+select, input {
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+  color: #f9fafb;
+  transition: border 0.2s;
+}
+
+select:focus, input:focus {
+  border-color: #16a34a;
+}
+
+option {
+  background: #1f2937;
+  color: #f9fafb;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}

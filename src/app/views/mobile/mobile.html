@@ -1,0 +1,90 @@
+<div class="min-h-screen bg-gray-900 flex justify-center">
+    <div class="w-full max-w-sm bg-gray-800 min-h-screen flex flex-col border border-gray-600 rounded-3xl overflow-hidden">
+
+        <!-- Header -->
+        <div class="bg-black px-6 py-5 flex items-center gap-3 rounded-b-3xl">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="30" viewBox="0 0 90 70">
+                <rect x="4" y="8" width="9" height="54" rx="4.5" fill="white" />
+                <rect x="4" y="8" width="26" height="9" rx="4.5" fill="white" />
+                <rect x="21" y="8" width="9" height="54" rx="4.5" fill="white" />
+                <path d="M38 14 L52 35 L38 56" stroke="white" stroke-width="7" fill="none" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                <line x1="52" y1="8" x2="66" y2="29" stroke="white" stroke-width="7" stroke-linecap="round" />
+            </svg>
+            <span class="text-white font-black text-2xl tracking-widest">NUMO</span>
+        </div>
+
+        <!-- Formulario -->
+        <div class="flex-1 px-5 py-6 flex flex-col gap-5">
+            
+
+            <!-- Tipo -->
+            <div class="flex gap-2 bg-gray-800 p-1 rounded-2xl">
+                <button (click)="seleccionarTipo('gasto')" [class]="tipoSeleccionado === 'gasto'
+            ? 'flex-1 py-2 rounded-xl bg-green-600 text-white font-semibold text-sm shadow-sm'
+            : 'flex-1 py-2 rounded-xl text-gray-400 text-sm'">
+                    Gasto
+                </button>
+                <button (click)="seleccionarTipo('ingreso')" [class]="tipoSeleccionado === 'ingreso'
+            ? 'flex-1 py-2 rounded-xl bg-green-600 text-white font-semibold text-sm shadow-sm'
+            : 'flex-1 py-2 rounded-xl text-gray-400 text-sm'">
+                    Ingreso
+                </button>
+            </div>
+
+            <!-- Categoría -->
+            <div class="flex flex-col gap-1">
+                <label class="text-xs font-medium text-gray-400 pl-1">Categoría</label>
+                <select [(ngModel)]="form.categoriaId">
+                    <option value="" disabled *ngIf="categoriasFiltradas.length === 0">Cargando...</option>
+                    <option *ngFor="let c of categoriasFiltradas" [value]="c.id">{{ c.icono }} {{ c.nombre }}</option>
+                </select>
+            </div>
+
+            <!-- Monto -->
+            <div class="flex flex-col gap-1">
+                <label class="text-xs font-medium text-gray-400 pl-1">Monto</label>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-medium">$</span>
+                    <input type="number" [(ngModel)]="form.monto" placeholder="0"
+                        style="padding-left: 1.75rem; font-size: 1.25rem; font-weight: 600;" />
+                </div>
+            </div>
+
+            <!-- Descripción -->
+            <div class="flex flex-col gap-1">
+                <label class="text-xs font-medium text-gray-400 pl-1">Descripción</label>
+                <input type="text" [(ngModel)]="form.descripcion" placeholder="¿En qué?" />
+            </div>
+
+            <!-- Botón guardar -->
+            <button (click)="guardarRegistro()"
+                class="w-full py-3 bg-black hover:bg-green-700 text-white font-semibold rounded-2xl text-sm transition-colors mt-1">
+                Guardar registro
+            </button>
+
+            <!-- Últimos registros -->
+            <div class="mt-1">
+                <p class="text-sm font-semibold text-gray-300 mb-3">Últimos registros</p>
+                <div class="flex flex-col gap-2">
+                    @for (r of ultimosRegistros; track r.id) {
+                    <div
+                        class="flex justify-between items-center bg-gray-800 rounded-2xl px-4 py-3 border border-gray-700">
+                        <div>
+                            <p class="text-sm font-medium text-gray-100">{{ r.descripcion || 'Sin descripción' }}</p>
+                            <p class="text-xs text-gray-500 mt-0.5">{{ r.categoria.nombre }} · {{ r.fecha }}</p>
+                        </div>
+                        <p [class]="r.categoria.tipo === 'ingreso'
+                ? 'text-sm font-semibold text-green-400'
+                : 'text-sm font-semibold text-red-400'">
+                            {{ r.categoria.tipo === 'ingreso' ? '+' : '-' }}${{ r.monto | number:'1.0-0' }}
+                        </p>
+                    </div>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

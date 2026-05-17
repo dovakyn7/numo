@@ -1,0 +1,117 @@
+<div class="min-h-screen bg-gray-900 text-gray-100 p-6">
+
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-6">
+    <div class="flex items-center gap-3">
+      <div class="bg-black p-2 rounded-2xl">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="24" viewBox="0 0 90 70">
+          <rect x="4" y="8" width="9" height="54" rx="4.5" fill="white"/>
+          <rect x="4" y="8" width="26" height="9" rx="4.5" fill="white"/>
+          <rect x="21" y="8" width="9" height="54" rx="4.5" fill="white"/>
+          <path d="M38 14 L52 35 L38 56" stroke="white" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="52" y1="8" x2="66" y2="29" stroke="white" stroke-width="7" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="font-black text-xl tracking-widest text-white">NUMO</span>
+    </div>
+    <span class="text-sm text-gray-400">{{ today | date:'MMMM yyyy' }}</span>
+  </div>
+
+  <!-- Balance total -->
+  <div class="bg-[#334155] rounded-3xl p-6 mb-6 flex justify-between items-center">
+    <div>
+      <p class="text-green-200 text-xs mb-1">Balance total</p>
+      <p class="text-white text-4xl font-bold">
+        {{ balanceVisible ? ('$' + (balance | number:'1.0-0')) : '••••••••' }}
+      </p>
+    </div>
+    <button (click)="toggleBalance()" class="text-green-200 hover:text-white transition-colors">
+      <span class="text-2xl">{{ balanceVisible ? '👁️' : '⚔️' }}</span>
+    </button>
+  </div>
+
+  <!-- Tarjetas mes -->
+  <div class="grid grid-cols-3 gap-4 mb-6">
+    <div class="bg-gray-800 rounded-2xl p-4 border border-gray-700">
+      <p class="text-xs text-gray-400 mb-2">Ingresos mes</p>
+      <p class="text-green-400 text-lg font-bold">${{ ingresosEsteMes | number:'1.0-0' }}</p>
+    </div>
+    <div class="bg-gray-800 rounded-2xl p-4 border border-gray-700">
+      <p class="text-xs text-gray-400 mb-2">Gastos mes</p>
+      <p class="text-red-400 text-lg font-bold">${{ gastosEsteMes | number:'1.0-0' }}</p>
+    </div>
+    <div class="bg-gray-800 rounded-2xl p-4 border border-gray-700">
+      <p class="text-xs text-gray-400 mb-2">Ahorro mes</p>
+      <p class="text-white text-lg font-bold">${{ ahorroEsteMes | number:'1.0-0' }}</p>
+    </div>
+  </div>
+
+  <!-- Gastos por categoría + Últimos registros -->
+  <div class="grid grid-cols-2 gap-4 mb-6">
+
+    <!-- Gastos por categoría -->
+    <div class="bg-gray-800 rounded-2xl p-5 border border-gray-700">
+      <p class="text-sm font-semibold text-gray-200 mb-4">Gastos por categoría</p>
+      <div class="flex flex-col gap-3">
+        @for (cat of gastosPorCategoria; track cat.nombre) {
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-gray-400">{{ cat.nombre }}</span>
+              <span class="text-gray-200 font-medium">${{ cat.total | number:'1.0-0' }}</span>
+            </div>
+            <div class="h-1.5 bg-gray-700 rounded-full">
+              <div class="h-1.5 rounded-full transition-all"
+                [style.width.%]="cat.porcentaje"
+                [style.background]="cat.color">
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+    
+    <!-- Ingresos por categoría -->
+     <div class="bg-gray-800 rounded-2xl p-5 border border-gray-700">
+      <p class="text-sm font-semibold text-gray-200 mb-4">Ingresos por categoría</p>
+      <div class="flex flex-col gap-3">
+        @for (cat of ingresosPorCategoria; track cat.nombre) {
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-gray-400">{{ cat.nombre }}</span>
+              <span class="text-gray-200 font-medium">${{ cat.total | number:'1.0-0' }}</span>
+            </div>
+            <div class="h-1.5 bg-gray-700 rounded-full">
+              <div class="h-1.5 rounded-full transition-all"
+                [style.width.%]="cat.porcentaje"
+                [style.background]="cat.color">
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+     </div>
+    
+    
+
+    <!-- Últimos registros -->
+    <div class="bg-gray-800 rounded-2xl p-5 border border-gray-700">
+      <p class="text-sm font-semibold text-gray-200 mb-4">Últimos registros</p>
+      <div class="flex flex-col gap-3">
+        @for (r of ultimosRegistros; track r.id) {
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm text-gray-200">{{ r.descripcion || 'Sin descripción' }}</p>
+              <p class="text-xs text-gray-500">{{ r.categoria.nombre }} · {{ r.fecha }}</p>
+            </div>
+            <p [class]="r.categoria.tipo === 'ingreso' ? 'text-sm font-semibold text-green-400' : 'text-sm font-semibold text-red-400'">
+              {{ r.categoria.tipo === 'ingreso' ? '+' : '-' }}${{ r.monto | number:'1.0-0' }}
+            </p>
+          </div>
+          <div class="h-px bg-gray-700"></div>
+        }
+      </div>
+    </div>
+
+  </div>
+
+</div>
