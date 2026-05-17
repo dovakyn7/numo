@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class NumoApiService {
-  private apiUrl = 'http://localhost:3001';
+  private apiUrl = 'https://numo-api-802p.onrender.com';
 
   constructor(private http: HttpClient) {}
 
